@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+require "jill"
+require "slop"
+
+def bail(err, opts)
+  puts err
+  puts
+  puts opts
+  exit(1)
+end
+
+begin
+  o = Slop::Options.new
+  o.string '-f', '--fuse', ''
+  o.string '-u', '--user', '', default: 'postgres'
+  o.bool '-a', '--agent', '', default: false
+  o.on '--version', 'print the version' do
+    puts Jill::VERSION
+    exit
+  end
+  o.on '--help' do
+    puts o
+    exit
+  end
+  opts = Slop::Parser.new(o).parse(ARGV)
+
+  
+
+  if !opts[:fuse] || !File.exist?(opts[:fuse])
+    bail "Error: please provide a file to fuse", opts
+  end
+  puts Jill.run(opts[:fuse])
+
+
+rescue
+  bail "Error: #{$!}", o
+end
