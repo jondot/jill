@@ -1,21 +1,21 @@
-# tiny-cli-ruby-gem
+# Jill
 
-A transforming template repo to make CLIs in Ruby.
-CLI is based on the lightweight `slop` and has testing and fixtures built in.
+Like [Joe](https://github.com/karan/joe) and [Harvey](https://github.com/architv/harvey), but for `README.md`s.
+
 
 ## Quickstart
 
-Once you run `rake provision` on this repo after you clone it, it will transform into your gem.
-
-We'll make a new CLI named `fable` with main module name named `Fable`. 
-Do this each time you want to make a new CLI.
-
 ```
-$ git clone https://github.com/jondot/tiny-cli-ruby-gem
-$ cd tiny-cli-ruby-gem
-$ rake provision[Fable,fable]
-$ cd ..
-$ mv tiny-cli-ruby-gem fable
+$ gem install jill
+
+# embed stars for each github link
+$ jill -s --star-in README.md --star-out README_STARRED.md
+
+# verify links
+$ jill -l --links-file README.md --links-base-url http://example.com
+
+# dedup links
+$ jill -d --dedup-file README.md --dedup-base-url http://example.com
 ```
 
 Done.

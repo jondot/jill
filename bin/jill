@@ -12,9 +12,8 @@ end
 
 begin
   o = Slop::Options.new
-  o.string '-f', '--fuse', ''
-  o.string '-u', '--user', '', default: 'postgres'
-  o.bool '-a', '--agent', '', default: false
+  jill = Jill::Runner.new
+  jill.setup(o)
   o.on '--version', 'print the version' do
     puts Jill::VERSION
     exit
@@ -25,14 +24,8 @@ begin
   end
   opts = Slop::Parser.new(o).parse(ARGV)
 
-  
-
-  if !opts[:fuse] || !File.exist?(opts[:fuse])
-    bail "Error: please provide a file to fuse", opts
-  end
-  puts Jill.run(opts[:fuse])
-
-
+  exit(1) unless jill.run(opts)
 rescue
+  raise if ENV["DEBUG"]
   bail "Error: #{$!}", o
 end
