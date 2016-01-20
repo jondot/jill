@@ -1,5 +1,5 @@
 require 'uri'
-require 'JSON'
+require 'json'
 require 'open-uri'
 require 'nokogiri'
 

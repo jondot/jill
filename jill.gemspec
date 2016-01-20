@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dotan Nahum"]
   spec.email         = ["jondotan@gmail.com"]
 
-  spec.summary       = %q{xxx}
-  spec.description   = %q{xxx}
+  spec.summary       = %q{Jill is your README.md assistant}
+  spec.description   = %q{Jill is your README.md assistant}
   spec.homepage      = "https://github.com/jondot/jill"
 
 
@@ -21,6 +21,10 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'slop', '~> 4.2.1'
   spec.add_dependency 'colorize', '~> 0.7.7'
+  spec.add_dependency 'kramdown', '~> 1.9.0'
+  spec.add_dependency 'nokogiri', '~> 1.6.7'
+  spec.add_dependency 'parallel', '~> 1.6.1'
+  spec.add_dependency 'httparty', '~> 0.13.7'
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
