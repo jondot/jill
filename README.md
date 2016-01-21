@@ -26,7 +26,7 @@ Fork, implement, add tests, pull request, get my everlasting thanks and a respec
 
 ### Thanks:
 
-To all [contributors](https://github.com/jondot/tiny-cli-ruby-gem/graphs/contributors)
+To all [contributors](https://github.com/jondot/jill/graphs/contributors)
 
 # Copyright
 
