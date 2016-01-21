@@ -30,4 +30,4 @@ To all [contributors](https://github.com/jondot/jill/graphs/contributors)
 
 # Copyright
 
-Copyright (c) 2016 [Dotan Nahum](http://gplus.to/dotan) [@jondot](http://twitter.com/jondot). See [LICENSE](LICENSE.txt) for further details.
+Copyright (c) 2016 [Dotan Nahum](http://gplus.to/dotan) [@jondot](https://twitter.com/jondot). See [LICENSE](LICENSE.txt) for further details.
