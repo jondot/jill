@@ -21,30 +21,41 @@ module Jill
       def run_if_switched(opts)
         file = opts[:star_in]
         file_out = opts[:star_out]
+        freshness_secs = opts[:freshness] || 60*60*24*7*14 # two weeks.
+
         out = ""
         puts "Starring #{file}..."
 
         # do this serially as to not piss off github
-        File.read(file).each_line do |line|
+        File.read(file).lines.each_with_index do |line, idx|
           # is a bullet,
           # starts with github.com,
           # has only 2 segments in path,
           # remove trailing slashes.
-          if line =~ /^- \[(.*?)\]\(https?:\/\/github\.com\/([^\/]+?)\/([^\/]+?)\/?\)(\s+.*)$/
+          if line =~ /^- (.*?)\[(.*?)\]\(https?:\/\/github\.com\/([^\/]+?)\/([^\/]+?)\/?\)(\s+.*)$/
+            badges = $1.split
+            
+            badges = badges.reject{|b| b.start_with?(':pineapple:')}
+            if fresh?(file, idx, freshness_secs)
+              badges << ':pineapple:'
+            end
+            tag = badges.join(' ')
+
             begin
-              ghslug = "#{$2}/#{$3}"
-              rest = $4
+              ghslug = "#{$3}/#{$4}"
+              rest = $5.chomp
               # remove existing stars if existing
-              name = $1.gsub(/\s?#{STAR}\d+/, '')
+              name = $2.gsub(/\s?#{STAR}\d+/, '')
 
               doc = Nokogiri::HTML(open("https://github.com/#{ghslug}").read)
               stars = doc.css('.js-social-count').text.strip.gsub(',','')
 
-              out <<  "- [#{name} #{STAR}#{stars}](https://github.com/#{ghslug})#{rest}\n"
+              out <<  "- #{tag}[#{name} #{STAR}#{stars}](https://github.com/#{ghslug})#{rest}\n"
             rescue
               out << line
-              out << "<!-- error fetching stars for #{ghslug}: #{$!} -->\n"
+              puts "<!-- error fetching stars for #{ghslug}: #{$!} -->"
             end
+
             putc "."
 
           else
@@ -56,6 +67,15 @@ module Jill
 
         return true
       end
+
+      private
+
+      def fresh?(file, ln, fresh_time)
+        out = `git blame #{file} -L #{ln+1},#{ln+1} -p`
+        ts = out.lines.find{|ln| ln.start_with?('author-time')}.split('author-time ')[1].to_i
+        (Time.now - Time.at(ts)) < fresh_time
+      end
+
     end
   end
 end
