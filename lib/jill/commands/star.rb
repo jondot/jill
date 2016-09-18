@@ -12,6 +12,7 @@ module Jill
         super
         o.string "--star-in", "Star input file", default: "README.md"
         o.string "--star-out", "Star output file", default: "README.md"
+        o.string "--freshness", "Freshness", default: "0"
       end
 
       def help
@@ -21,7 +22,7 @@ module Jill
       def run_if_switched(opts)
         file = opts[:star_in]
         file_out = opts[:star_out]
-        freshness_secs = opts[:freshness] || 60*60*24*7*14 # two weeks.
+        freshness_secs = opts[:freshness].to_i
 
         out = ""
         puts "Starring #{file}..."
@@ -35,9 +36,11 @@ module Jill
           if line =~ /^- (.*?)\[(.*?)\]\(https?:\/\/github\.com\/([^\/]+?)\/([^\/]+?)\/?\)(\s+.*)$/
             badges = $1.split
             
-            badges = badges.reject{|b| b.start_with?(':pineapple:')}
-            if fresh?(file, idx, freshness_secs)
-              badges << ':pineapple:'
+            if freshness_secs > 0
+              badges = badges.reject{|b| b.start_with?(':pineapple:')}
+              if fresh?(file, idx, freshness_secs)
+                badges << ':pineapple:'
+              end
             end
             tag = badges.join(' ')
 
